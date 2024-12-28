@@ -1,0 +1,13 @@
+#Imprimir os três primeiros registros da tabela tracks
+from sqlalchemy.orm import Session
+from sqlalchemy import select
+
+# Iniciando a sessão
+session = Session(engine)
+
+# Query para obter os 3 primeiros registros da tabela 'tracks'
+tracks = session.execute(select(Base.classes.tracks).limit(3)).scalars().all()
+
+# Imprimir as faixas
+for track in tracks:
+    print(track.TrackId, track.Name)
