@@ -1,0 +1,10 @@
+# Query para obter o nome da faixa e o título do álbum para as primeiras 20 faixas
+tracks_albums = session.execute(
+    select(Base.classes.tracks.Name, Base.classes.albums.Title)
+    .join(Base.classes.albums, Base.classes.tracks.AlbumId == Base.classes.albums.AlbumId)
+    .limit(20)
+).all()
+
+# Imprimir as faixas e os títulos dos álbuns
+for track_name, album_title in tracks_albums:
+    print(f"Track: {track_name}, Album: {album_title}")
