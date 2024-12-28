@@ -1,0 +1,10 @@
+# Query para obter os nomes das faixas e a quantidade vendida nas 10 primeiras vendas
+sales_details = session.execute(
+    select(Base.classes.tracks.Name, Base.classes.invoice_items.Quantity)
+    .join(Base.classes.tracks, Base.classes.invoice_items.TrackId == Base.classes.tracks.TrackId)
+    .limit(10)
+).all()
+
+# Imprimir o nome da faixa e a quantidade vendida
+for track_name, quantity in sales_details:
+    print(f"Track: {track_name}, Quantity Sold: {quantity}")
