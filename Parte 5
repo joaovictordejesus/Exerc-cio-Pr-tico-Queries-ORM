@@ -1,0 +1,14 @@
+from sqlalchemy import func
+
+# Query para obter as 10 faixas mais vendidas
+top_tracks = session.execute(
+    select(Base.classes.tracks.Name, func.sum(Base.classes.invoice_items.Quantity).label('total_sold'))
+    .join(Base.classes.invoice_items, Base.classes.tracks.TrackId == Base.classes.invoice_items.TrackId)
+    .group_by(Base.classes.tracks.TrackId)
+    .order_by(func.sum(Base.classes.invoice_items.Quantity).desc())
+    .limit(10)
+).all()
+
+# Imprimir as faixas mais vendidas e a quantidade
+for track_name, total_sold in top_tracks:
+    print(f"Track: {track_name}, Total Sold: {total_sold}")
