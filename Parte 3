@@ -1,0 +1,9 @@
+# Query para obter as 10 primeiras vendas da tabela 'invoice_items'
+invoice_items = session.execute(
+    select(Base.classes.invoice_items)
+    .limit(10)
+).scalars().all()
+
+# Imprimir as vendas
+for item in invoice_items:
+    print(f"InvoiceItemId: {item.InvoiceItemId}, TrackId: {item.TrackId}, Quantity: {item.Quantity}")
