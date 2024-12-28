@@ -1,0 +1,14 @@
+# Query para obter os 10 artistas que mais venderam
+top_artists = session.execute(
+    select(Base.classes.artists.Name, func.sum(Base.classes.invoice_items.Quantity).label('total_sold'))
+    .join(Base.classes.tracks, Base.classes.invoice_items.TrackId == Base.classes.tracks.TrackId)
+    .join(Base.classes.albums, Base.classes.tracks.AlbumId == Base.classes.albums.AlbumId)
+    .join(Base.classes.artists, Base.classes.albums.ArtistId == Base.classes.artists.ArtistId)
+    .group_by(Base.classes.artists.ArtistId)
+    .order_by(func.sum(Base.classes.invoice_items.Quantity).desc())
+    .limit(10)
+).all()
+
+# Imprimir os artistas mais vendidos e a quantidade total de vendas
+for artist_name, total_sold in top_artists:
+    print(f"Artist: {artist_name}, Total Sold: {total_sold}")
